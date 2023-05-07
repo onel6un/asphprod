@@ -1,0 +1,7 @@
+1) добавление нового асфальта
+INSERT INTO asphalt (name, climat_id, send, bitumen, breakstone, category_id)
+	SELECT "Асфальт 1", climat_id, '50', '50', '50', category_id
+	FROM climat
+		JOIN category ON climat.name = "Умеренный"
+			AND category.name = "Обычная"
+2)
