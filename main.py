@@ -1,11 +1,32 @@
 import sys
-import os
 from PySide6 import QtCore
-from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QListWidgetItem
+from PySide6.QtWidgets import (QApplication, QMainWindow, QDialog,
+                               QListWidgetItem)
 from main_window import Ui_MainWindow
 from dlg_price import Ui_dlgPrice
+from dlg_asph import Ui_DlgAsph
 
-from models import Price, Asphalt, Factory
+from models import Price, Asphalt, Factory, Supplement
+
+
+class AsphDialog(QDialog):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui = Ui_DlgAsph()
+        self.ui.setupUi(self)
+
+        self.load_asphalt()
+
+    def load_asphalt(self):
+        self.ui.listAsph.clear()
+        rows = Asphalt.all()
+        for r in rows:
+            suplements_obj = Supplement.filter(asphalt_id=r.asphalt_id)
+            suplemnts_str = "\n".join(list(map(lambda x: x.supplement_name, suplements_obj)))
+            print(suplemnts_str)
+            item = QListWidgetItem(f"{r.asphalt_name} {r.send} {r.breakstone} {r.bitumen}")
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, r)
+            self.ui.listAsph.addItem(item)
 
 
 class PriceDialog(QDialog):
@@ -70,6 +91,10 @@ class MainWindow(QMainWindow):
 
     def on_btnPrice_click(self):
         dialog = PriceDialog()
+        dialog.exec()
+
+    def on_btnAsph_click(self):
+        dialog = AsphDialog()
         dialog.exec()
 
 
