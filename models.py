@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
 
 
-engine = create_engine("sqlite+pysqlite:///db.db", echo=True)
+engine = create_engine("sqlite+pysqlite:///db.db")
 
 
 class Price:
@@ -30,7 +30,8 @@ class Price:
 
             s.execute(
                 text(query),
-                {'asphalt_id': asphalt_id, 'factory_id': factory_id, 'price': price}
+                {'asphalt_id': asphalt_id, 'factory_id': factory_id,
+                 'price': price}
             )
             s.commit()
 
@@ -62,6 +63,20 @@ class Asphalt:
 
             return s.execute(text(query))
 
+    @staticmethod
+    def delete(asphalt_id):
+        with Session(engine) as s:
+            query = '''
+                DELETE FROM asphalt
+                WHERE asphalt_id = :asphalt_id
+            '''
+
+            s.execute(
+                text(query),
+                {'asphalt_id': asphalt_id}
+            )
+            s.commit()
+
 
 class Factory:
     @staticmethod
@@ -73,3 +88,17 @@ class Factory:
             '''
 
             return s.execute(text(query))
+
+
+class Supplement:
+    @staticmethod
+    def filter(asphalt_id):
+        with Session(engine) as s:
+            query = '''
+                SELECT supplement_id, supplement_name, amount
+                FROM asph_supp
+                    JOIN supplement USING(supplement_id)
+                WHERE asphalt_id = :asphalt_id
+            '''
+
+            return s.execute(text(query), {'asphalt_id': asphalt_id})

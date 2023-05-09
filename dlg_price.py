@@ -45,9 +45,9 @@ class Ui_dlgPrice(object):
         self.inpPrice = QLineEdit(dlgPrice)
         self.inpPrice.setObjectName(u"inpPrice")
         self.inpPrice.setGeometry(QRect(290, 200, 113, 22))
-        self.btn_add_asph = QPushButton(dlgPrice)
-        self.btn_add_asph.setObjectName(u"btn_add_asph")
-        self.btn_add_asph.setGeometry(QRect(450, 40, 111, 24))
+        self.btnAddAsph = QPushButton(dlgPrice)
+        self.btnAddAsph.setObjectName(u"btnAddAsph")
+        self.btnAddAsph.setGeometry(QRect(450, 40, 111, 24))
         self.label_2 = QLabel(dlgPrice)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(290, 80, 71, 16))
@@ -56,7 +56,7 @@ class Ui_dlgPrice(object):
         self.label.setGeometry(QRect(290, 10, 48, 16))
         self.listPrice = QListWidget(dlgPrice)
         self.listPrice.setObjectName(u"listPrice")
-        self.listPrice.setGeometry(QRect(0, 20, 256, 192))
+        self.listPrice.setGeometry(QRect(20, 20, 256, 192))
 
         self.retranslateUi(dlgPrice)
 
@@ -69,7 +69,7 @@ class Ui_dlgPrice(object):
         self.btnDel.setText(QCoreApplication.translate("dlgPrice", u"\u0423\u0434\u0430\u043b\u0438\u0442\u044c", None))
         self.label_3.setText(QCoreApplication.translate("dlgPrice", u"\u0426\u0435\u043d\u0430", None))
         self.btnAddFactory.setText(QCoreApplication.translate("dlgPrice", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0437\u0430\u0432\u043e\u0434", None))
-        self.btn_add_asph.setText(QCoreApplication.translate("dlgPrice", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0430\u0441\u0444\u0430\u043b\u044c\u0442", None))
+        self.btnAddAsph.setText(QCoreApplication.translate("dlgPrice", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0430\u0441\u0444\u0430\u043b\u044c\u0442", None))
         self.label_2.setText(QCoreApplication.translate("dlgPrice", u"\u0417\u0430\u0432\u043e\u0434", None))
         self.label.setText(QCoreApplication.translate("dlgPrice", u"\u0410\u0441\u0444\u0430\u043b\u044c\u0442", None))
     # retranslateUi
