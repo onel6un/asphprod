@@ -33,7 +33,7 @@ class Price:
                 {'asphalt_id': asphalt_id, 'factory_id': factory_id,
                  'price': price}
             )
-            s.commit()
+            s.commit() 
 
     @staticmethod
     def delete(price_id):
@@ -77,6 +77,49 @@ class Asphalt:
             )
             s.commit()
 
+    @staticmethod
+    def create(asphalt_name, send, bitumen, breakstone, category_id,
+               climat_id):
+        with Session(engine) as s:
+            query = '''
+                INSERT INTO asphalt(
+                    asphalt_name,
+                    send,
+                    bitumen,
+                    breakstone,
+                    category_id,
+                    climat_id
+                )
+                VALUES (
+                    :asphalt_name,
+                    :send,
+                    :bitumen,
+                    :breakstone,
+                    :category_id,
+                    :climat_id
+                )
+            '''
+
+            s.execute(
+                text(query),
+                {'asphalt_name': asphalt_name, 'send': send,
+                 'bitumen': bitumen, 'breakstone': breakstone,
+                 'category_id': category_id, 'climat_id': climat_id}
+            )
+            s.commit()
+
+    @staticmethod
+    def last():
+        with Session(engine) as s:
+            query = '''
+                SELECT *
+                FROM asphalt
+                ORDER BY asphalt_id DESC
+                LIMIT 1
+            '''
+
+            return s.execute(text(query))
+
 
 class Factory:
     @staticmethod
@@ -92,6 +135,16 @@ class Factory:
 
 class Supplement:
     @staticmethod
+    def all():
+        with Session(engine) as s:
+            query = '''
+                SELECT *
+                FROM supplement
+            '''
+
+            return s.execute(text(query))
+
+    @staticmethod
     def filter(asphalt_id):
         with Session(engine) as s:
             query = '''
@@ -102,3 +155,53 @@ class Supplement:
             '''
 
             return s.execute(text(query), {'asphalt_id': asphalt_id})
+
+
+class Category:
+    @staticmethod
+    def all():
+        with Session(engine) as s:
+            query = '''
+                SELECT *
+                FROM category
+            '''
+
+            return s.execute(text(query))
+
+
+class Climat:
+    @staticmethod
+    def all():
+        with Session(engine) as s:
+            query = '''
+                SELECT *
+                FROM climat
+            '''
+
+            return s.execute(text(query))
+
+
+class AsphSupp:
+    @staticmethod
+    def create(asphalt_id, supplement_id, amount):
+        with Session(engine) as s:
+            query = '''
+                INSERT INTO asph_supp(
+                    asphalt_id,
+                    supplement_id,
+                    amount
+                )
+                VALUES (
+                    :asphalt_id,
+                    :supplement_id,
+                    :amount
+                )
+            '''
+
+            s.execute(
+                text(query),
+                {'asphalt_id': asphalt_id,
+                 'supplement_id': supplement_id,
+                 'amount': amount}
+            )
+            s.commit()

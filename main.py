@@ -5,8 +5,9 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QDialog,
 from main_window import Ui_MainWindow
 from dlg_price import Ui_dlgPrice
 from dlg_asph import Ui_DlgAsph
-
-from models import Price, Asphalt, Factory, Supplement
+from dlg_add_asph import Ui_dlgAddAsph
+from models import (Price, Asphalt, Factory, Supplement, Category,
+                    Climat, AsphSupp)
 
 
 class TableAsph(QtCore.QAbstractTableModel):
@@ -100,10 +101,12 @@ class AsphDialog(QDialog):
         Asphalt.delete(asphalt_id=asphalt_id)
 
         self.load_asphalt()
-    
-    def on_btnAddAsph_click(self):
-        pass
 
+    def on_btnAddAsph_click(self):
+        dialog = AsphAddDialog()
+        dialog.exec()
+
+        self.load_asphalt()
 
     @staticmethod
     def _load_supplement(asphalt_id) -> dict:
@@ -120,6 +123,79 @@ class AsphDialog(QDialog):
             'str': suplements_str,
             'objs': suplements_obj
         }
+
+
+class AsphAddDialog(QDialog):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui = Ui_dlgAddAsph()
+        self.ui.setupUi(self)
+
+        self.load_category()
+        self.load_climat()
+        self.load_supplement()
+
+        self.ui.btnAddSpp.clicked.connect(self.on_btnAddSpp_click)
+        self.ui.btnDelSpp.clicked.connect(self.on_btnDelSpp_click)
+        self.ui.btnAddAsph.clicked.connect(self.on_btnAddAsph_click)
+
+    def load_category(self):
+        rows = Category.all()
+        for r in rows:
+            self.ui.cmbCtg.addItem(r.category_name, r)
+
+    def load_climat(self):
+        rows = Climat.all()
+        for r in rows:
+            self.ui.cmbClm.addItem(r.climat_name, r)
+
+    def load_supplement(self):
+        rows = Supplement.all()
+        for r in rows:
+            self.ui.cmbSpp.addItem(r.supplement_name, r)
+
+    def on_btnAddAsph_click(self):
+        asph_name = self.ui.inpName.text()
+        climat_id = self.ui.cmbClm.currentData().climat_id
+        category_id = self.ui.cmbCtg.currentData().category_id
+        amount_btm = int(self.ui.inpBtm.text())
+        amount_snd = int(self.ui.inpSnd.text())
+        amount_brk = int(self.ui.inpBrk.text())
+
+        Asphalt.create(asphalt_name=asph_name, climat_id=climat_id,
+                       category_id=category_id, bitumen=amount_btm,
+                       send=amount_snd, breakstone=amount_brk)
+
+        last_asph_obj = Asphalt.last()
+        last_asph_id = last_asph_obj.__next__().asphalt_id
+
+        count_spp = self.ui.lstSpp.count()
+        if count_spp > 0:
+            for i in range(count_spp):
+
+                item_spp = self.ui.lstSpp.item(i)
+                data_spp = item_spp.data(QtCore.Qt.ItemDataRole.UserRole)
+
+                amount_spp = data_spp[1]
+                spp_id = data_spp[0].supplement_id
+
+                AsphSupp.create(asphalt_id=last_asph_id, supplement_id=spp_id,
+                                amount=amount_spp)
+
+        self.accept()
+
+    def on_btnAddSpp_click(self):
+        spp_data = self.ui.cmbSpp.currentData()
+        spp_amount = int(self.ui.inpSppAmnt.text())
+        item = QListWidgetItem(
+                f"{spp_data.supplement_name} - {spp_amount}"
+            )
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, (spp_data, spp_amount))
+        self.ui.lstSpp.addItem(item)
+
+    def on_btnDelSpp_click(self):
+        indx_item = self.ui.lstSpp.currentRow()
+        self.ui.lstSpp.takeItem(indx_item)
 
 
 class PriceDialog(QDialog):
@@ -177,8 +253,11 @@ class PriceDialog(QDialog):
         self.load_price()
 
     def on_btnAddAsph_click(self):
+        self.ui.cmbAsph.clear()
         dialog = AsphDialog()
         dialog.exec()
+
+        self.load_asphalt()
 
 
 class MainWindow(QMainWindow):
@@ -206,3 +285,4 @@ if __name__ == '__main__':
     window.show()
 
     sys.exit(app.exec())
+ 
