@@ -6,6 +6,7 @@ from main_window import Ui_MainWindow
 from dlg_price import Ui_dlgPrice
 from dlg_asph import Ui_DlgAsph
 from dlg_add_asph import Ui_dlgAddAsph
+from dlg_cng_asph import Ui_dlgCngAsph
 from models import (Price, Asphalt, Factory, Supplement, Category,
                     Climat, AsphSupp)
 
@@ -85,6 +86,7 @@ class AsphDialog(QDialog):
 
         self.ui.btnDelAsph.clicked.connect(self.on_btnDelAsph_click)
         self.ui.btnAddAsph.clicked.connect(self.on_btnAddAsph_click)
+        self.ui.btnCngAsph.clicked.connect(self.on_btnCngAsph_click)
 
     def load_asphalt(self):
         rows = Asphalt.all()
@@ -94,9 +96,13 @@ class AsphDialog(QDialog):
             items.append((r, suplements_dict))
         self.table_model.set_items(items)
 
-    def on_btnDelAsph_click(self):
+    def __get_current_data(self):
         item = self.ui.tbAsph.currentIndex()
         data = item.data(QtCore.Qt.ItemDataRole.UserRole)
+        return data
+
+    def on_btnDelAsph_click(self):
+        data = self.__get_current_data()
         asphalt_id = data[0].asphalt_id
         Asphalt.delete(asphalt_id=asphalt_id)
 
@@ -108,17 +114,25 @@ class AsphDialog(QDialog):
 
         self.load_asphalt()
 
+    def on_btnCngAsph_click(self):
+        dialog = AsphCngDialog(instance=self.__get_current_data())
+        dialog.exec()
+
+        self.load_asphalt()
+
     @staticmethod
     def _load_supplement(asphalt_id) -> dict:
         suplements_obj = Supplement.filter(asphalt_id=asphalt_id)
+        list = suplements_obj.
         suplements_str = "\n".join(
             list(
                 map(
                     lambda x: f"{x.supplement_name} - {x.amount}",
-                    suplements_obj
+                    list
                 )
             )
         )
+        print('2', suplements_obj.__next__().supplement_name)
         return {
             'str': suplements_str,
             'objs': suplements_obj
@@ -196,6 +210,64 @@ class AsphAddDialog(QDialog):
     def on_btnDelSpp_click(self):
         indx_item = self.ui.lstSpp.currentRow()
         self.ui.lstSpp.takeItem(indx_item)
+
+
+class AsphCngDialog(AsphAddDialog):
+    def __init__(self, instance, *args, **kwargs):
+        super(AsphAddDialog, self).__init__(*args, **kwargs)
+        self.ui = Ui_dlgCngAsph()
+        self.ui.setupUi(self)
+
+        self.obj_instance = instance
+
+        self.load_category()
+        self.load_climat()
+        self.load_supplement()
+        self.load_inputs()
+        self.load_supplement_in_lstSpp()
+
+        self.ui.btnAddSpp.clicked.connect(self.on_btnAddSpp_click)
+        self.ui.btnDelSpp.clicked.connect(self.on_btnDelSpp_click)
+
+    # def set_instance(self, instance):
+    #     print(instance)
+    #     self.obj_instance = instance
+
+    def load_category(self):
+        super().load_category()
+        asph_instance = self.obj_instance[0]
+        ctg_name = asph_instance.category_name
+        inst_indx = self.ui.cmbCtg.findText(ctg_name)
+        self.ui.cmbCtg.setCurrentIndex(inst_indx)
+
+    def load_climat(self):
+        super().load_climat()
+        asph_instance = self.obj_instance[0]
+        clm_name = asph_instance.climat_name
+        inst_indx = self.ui.cmbClm.findText(clm_name)
+        self.ui.cmbClm.setCurrentIndex(inst_indx)
+
+    # def load_supplement_in_lstSpp(self):
+    #     supp_dict_instance = self.obj_instance[1]
+    #     supp_objs = supp_dict_instance.get("objs")
+    #     # print(supp_objs.__next__().supplement_name)
+    #     for obj in supp_objs:
+    #         print(obj)
+    #         supp_name = obj.supplement_name
+    #         supp_amount = obj.amount
+    #         item = QListWidgetItem(
+    #             f"{supp_name} - {supp_amount}"
+    #         )
+    #         item.setData(QtCore.Qt.ItemDataRole.UserRole, obj)
+            
+    #         self.ui.lstSpp.addItem(item)
+
+    def load_inputs(self):
+        asph_instance = self.obj_instance[0]
+        self.ui.inpBrk.setText(str(asph_instance.breakstone))
+        self.ui.inpName.setText(asph_instance.asphalt_name)
+        self.ui.inpBtm.setText(str(asph_instance.bitumen))
+        self.ui.inpSnd.setText(str(asph_instance.send))
 
 
 class PriceDialog(QDialog):

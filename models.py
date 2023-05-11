@@ -33,7 +33,7 @@ class Price:
                 {'asphalt_id': asphalt_id, 'factory_id': factory_id,
                  'price': price}
             )
-            s.commit() 
+            s.commit()
 
     @staticmethod
     def delete(price_id):
