@@ -206,6 +206,17 @@ class Category:
 
             return s.execute(text(query))
 
+    @staticmethod
+    def create(category_name, durable):
+        with Session(engine) as s:
+            query = '''
+                INSERT INTO category(category_name, durable)
+                VALUES (:climat_name, :durable)
+            '''
+
+            s.execute(text(query), {'category_name': category_name, 'durable:':durable})
+            s.commit()
+
 
 class Climat:
     @staticmethod
@@ -217,6 +228,17 @@ class Climat:
             '''
 
             return s.execute(text(query))
+
+    @staticmethod
+    def create(climat_name):
+        with Session(engine) as s:
+            query = '''
+                INSERT INTO climat(climat_name)
+                VALUES (:climat_name)
+            '''
+
+            s.execute(text(query), {'climat_name': climat_name})
+            s.commit()
 
 
 class AsphSupp:
