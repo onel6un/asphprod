@@ -211,10 +211,13 @@ class Category:
         with Session(engine) as s:
             query = '''
                 INSERT INTO category(category_name, durable)
-                VALUES (:climat_name, :durable)
+                VALUES (:category_name, :durable)
             '''
 
-            s.execute(text(query), {'category_name': category_name, 'durable:':durable})
+            s.execute(
+                text(query),
+                {'category_name': category_name, 'durable': durable}
+            )
             s.commit()
 
 

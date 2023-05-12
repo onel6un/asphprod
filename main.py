@@ -8,6 +8,7 @@ from dlg_asph import Ui_DlgAsph
 from dlg_add_asph import Ui_dlgAddAsph
 from dlg_cng_asph import Ui_dlgCngAsph
 from dlg_add_clm import Ui_DlgAddClm
+from dlg_add_ctg import Ui_DlgAddCtg
 from models import (Price, Asphalt, Factory, Supplement, Category,
                     Climat, AsphSupp)
 
@@ -23,6 +24,22 @@ class ClimatAddDialog(QDialog):
     def on_btnAddClm_click(self):
         climat_name = self.ui.inpName.text()
         Climat.create(climat_name=climat_name)
+
+        self.accept()
+
+
+class CategoryAddDialog(QDialog):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui = Ui_DlgAddCtg()
+        self.ui.setupUi(self)
+
+        self.ui.btnAddCtg.clicked.connect(self.on_btnAddClm_click)
+
+    def on_btnAddClm_click(self):
+        category_name = self.ui.inpName.text()
+        durable = float(self.ui.inpDrb.text())
+        Category.create(category_name=category_name, durable=durable)
 
         self.accept()
 
@@ -166,6 +183,7 @@ class AsphAddDialog(QDialog):
         self.ui.btnDelSpp.clicked.connect(self.on_btnDelSpp_click)
         self.ui.btnAddAsph.clicked.connect(self.on_btnAddAsph_click)
         self.ui.bntAddClm.clicked.connect(self.on_btnAddClm_click)
+        self.ui.btnAddCtg.clicked.connect(self.on_btnAddCtg_click)
 
     def load_category(self):
         self.ui.cmbCtg.clear()
@@ -233,6 +251,12 @@ class AsphAddDialog(QDialog):
 
         self.load_climat()
 
+    def on_btnAddCtg_click(self):
+        dialog = CategoryAddDialog()
+        dialog.exec()
+
+        self.load_category()
+
 
 class AsphCngDialog(AsphAddDialog):
     def __init__(self, instance, *args, **kwargs):
@@ -252,6 +276,7 @@ class AsphCngDialog(AsphAddDialog):
         self.ui.btnDelSpp.clicked.connect(self.on_btnDelSpp_click)
         self.ui.btnCngAsph.clicked.connect(self.on_btnCngAsph_click)
         self.ui.bntAddClm.clicked.connect(self.on_btnAddClm_click)
+        self.ui.btnAddCtg.clicked.connect(self.on_btnAddCtg_click)
 
     def load_category(self):
         super().load_category()
