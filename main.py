@@ -123,19 +123,16 @@ class AsphDialog(QDialog):
     @staticmethod
     def _load_supplement(asphalt_id) -> dict:
         suplements_obj = Supplement.filter(asphalt_id=asphalt_id)
-        list = suplements_obj.
-        suplements_str = "\n".join(
-            list(
-                map(
-                    lambda x: f"{x.supplement_name} - {x.amount}",
-                    list
-                )
-            )
-        )
-        print('2', suplements_obj.__next__().supplement_name)
+
+        suplements_str = ''
+        lst_obj = []
+        for obj in suplements_obj:
+            suplements_str = suplements_str + f"{obj.supplement_name} - {obj.amount}\n"
+            lst_obj.append(obj)
+
         return {
             'str': suplements_str,
-            'objs': suplements_obj
+            'lst_obj': lst_obj
         }
 
 
@@ -172,9 +169,9 @@ class AsphAddDialog(QDialog):
         asph_name = self.ui.inpName.text()
         climat_id = self.ui.cmbClm.currentData().climat_id
         category_id = self.ui.cmbCtg.currentData().category_id
-        amount_btm = int(self.ui.inpBtm.text())
-        amount_snd = int(self.ui.inpSnd.text())
-        amount_brk = int(self.ui.inpBrk.text())
+        amount_btm = float(self.ui.inpBtm.text())
+        amount_snd = float(self.ui.inpSnd.text())
+        amount_brk = float(self.ui.inpBrk.text())
 
         Asphalt.create(asphalt_name=asph_name, climat_id=climat_id,
                        category_id=category_id, bitumen=amount_btm,
@@ -228,10 +225,7 @@ class AsphCngDialog(AsphAddDialog):
 
         self.ui.btnAddSpp.clicked.connect(self.on_btnAddSpp_click)
         self.ui.btnDelSpp.clicked.connect(self.on_btnDelSpp_click)
-
-    # def set_instance(self, instance):
-    #     print(instance)
-    #     self.obj_instance = instance
+        self.ui.btnCngAsph.clicked.connect(self.on_btnCngAsph_click)
 
     def load_category(self):
         super().load_category()
@@ -247,20 +241,18 @@ class AsphCngDialog(AsphAddDialog):
         inst_indx = self.ui.cmbClm.findText(clm_name)
         self.ui.cmbClm.setCurrentIndex(inst_indx)
 
-    # def load_supplement_in_lstSpp(self):
-    #     supp_dict_instance = self.obj_instance[1]
-    #     supp_objs = supp_dict_instance.get("objs")
-    #     # print(supp_objs.__next__().supplement_name)
-    #     for obj in supp_objs:
-    #         print(obj)
-    #         supp_name = obj.supplement_name
-    #         supp_amount = obj.amount
-    #         item = QListWidgetItem(
-    #             f"{supp_name} - {supp_amount}"
-    #         )
-    #         item.setData(QtCore.Qt.ItemDataRole.UserRole, obj)
-            
-    #         self.ui.lstSpp.addItem(item)
+    def load_supplement_in_lstSpp(self):
+        supp_dict_instance = self.obj_instance[1]
+        supp_objs = supp_dict_instance.get("lst_obj")
+        for obj in supp_objs:
+            supp_name = obj.supplement_name
+            supp_amount = obj.amount
+            item = QListWidgetItem(
+                f"{supp_name} - {supp_amount}"
+            )
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, (obj, supp_amount))
+
+            self.ui.lstSpp.addItem(item)
 
     def load_inputs(self):
         asph_instance = self.obj_instance[0]
@@ -268,6 +260,37 @@ class AsphCngDialog(AsphAddDialog):
         self.ui.inpName.setText(asph_instance.asphalt_name)
         self.ui.inpBtm.setText(str(asph_instance.bitumen))
         self.ui.inpSnd.setText(str(asph_instance.send))
+
+    def on_btnCngAsph_click(self):
+        asph_instance = self.obj_instance[0]
+        asphalt_id = asph_instance.asphalt_id
+        asphalt_name = self.ui.inpName.text()
+        climat_id = self.ui.cmbClm.currentData().climat_id
+        category_id = self.ui.cmbCtg.currentData().category_id
+        amount_btm = float(self.ui.inpBtm.text())
+        amount_snd = float(self.ui.inpSnd.text())
+        amount_brk = float(self.ui.inpBrk.text())
+
+        Asphalt.update(asphalt_id=asphalt_id, climat_id=climat_id,
+                       category_id=category_id, bitumen=amount_btm,
+                       send=amount_snd, breakstone=amount_brk,
+                       asphalt_name=asphalt_name)
+
+        Asphalt.del_supp(asphalt_id=asphalt_id)
+
+        count_spp = self.ui.lstSpp.count()
+        if count_spp > 0:
+            for i in range(count_spp):
+
+                item_spp = self.ui.lstSpp.item(i)
+                data_spp = item_spp.data(QtCore.Qt.ItemDataRole.UserRole) 
+                amount_spp = data_spp[1]
+                spp_id = data_spp[0].supplement_id
+
+                AsphSupp.create(asphalt_id=asphalt_id, supplement_id=spp_id,
+                                amount=amount_spp)
+
+        self.accept()
 
 
 class PriceDialog(QDialog):
@@ -357,4 +380,3 @@ if __name__ == '__main__':
     window.show()
 
     sys.exit(app.exec())
- 

@@ -120,6 +120,44 @@ class Asphalt:
 
             return s.execute(text(query))
 
+    @staticmethod
+    def update(asphalt_id, asphalt_name, send, bitumen, breakstone,
+               category_id, climat_id):
+        with Session(engine) as s:
+            query = '''
+                UPDATE asphalt
+                    SET asphalt_name = :asphalt_name,
+                        send = :send,
+                        bitumen = :bitumen,
+                        breakstone = :breakstone,
+                        category_id = :category_id,
+                        climat_id = :climat_id
+                    WHERE asphalt_id = :asphalt_id
+            '''
+
+        s.execute(
+                text(query),
+                {'asphalt_name': asphalt_name, 'send': send,
+                 'bitumen': bitumen, 'breakstone': breakstone,
+                 'category_id': category_id, 'climat_id': climat_id,
+                 'asphalt_id': asphalt_id}
+            )
+        s.commit()
+
+    @staticmethod
+    def del_supp(asphalt_id):
+        with Session(engine) as s:
+            query = '''
+                DELETE FROM asph_supp
+                WHERE asphalt_id = :asphalt_id
+            '''
+
+            s.execute(
+                text(query),
+                {'asphalt_id': asphalt_id}
+            )
+            s.commit()
+
 
 class Factory:
     @staticmethod

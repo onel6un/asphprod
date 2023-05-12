@@ -144,7 +144,7 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>190</x>
      <y>60</y>
      <width>61</width>
      <height>20</height>
@@ -190,7 +190,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>190</x>
      <y>100</y>
      <width>48</width>
      <height>16</height>
@@ -244,6 +244,32 @@
    </property>
    <property name="text">
     <string>Песок</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="bntAddClm">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>100</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Новая климатическая зона</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnAddCtg">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>60</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Добавить категорию</string>
    </property>
   </widget>
  </widget>

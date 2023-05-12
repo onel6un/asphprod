@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>492</width>
-    <height>421</height>
+    <width>496</width>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -244,6 +244,32 @@
    </property>
    <property name="text">
     <string>Название</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnAddCtg">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>50</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Добавить категорию</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="bntAddClm">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>90</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Новая климатическая зона</string>
    </property>
   </widget>
  </widget>

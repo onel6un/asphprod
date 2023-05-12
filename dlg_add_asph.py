@@ -23,7 +23,7 @@ class Ui_dlgAddAsph(object):
     def setupUi(self, dlgAddAsph):
         if not dlgAddAsph.objectName():
             dlgAddAsph.setObjectName(u"dlgAddAsph")
-        dlgAddAsph.resize(492, 421)
+        dlgAddAsph.resize(496, 430)
         self.inpBtm = QLineEdit(dlgAddAsph)
         self.inpBtm.setObjectName(u"inpBtm")
         self.inpBtm.setGeometry(QRect(40, 130, 113, 21))
@@ -84,6 +84,12 @@ class Ui_dlgAddAsph(object):
         self.label_8 = QLabel(dlgAddAsph)
         self.label_8.setObjectName(u"label_8")
         self.label_8.setGeometry(QRect(190, 10, 61, 20))
+        self.btnAddCtg = QPushButton(dlgAddAsph)
+        self.btnAddCtg.setObjectName(u"btnAddCtg")
+        self.btnAddCtg.setGeometry(QRect(270, 50, 191, 21))
+        self.bntAddClm = QPushButton(dlgAddAsph)
+        self.bntAddClm.setObjectName(u"bntAddClm")
+        self.bntAddClm.setGeometry(QRect(270, 90, 191, 21))
 
         self.retranslateUi(dlgAddAsph)
 
@@ -103,5 +109,7 @@ class Ui_dlgAddAsph(object):
         self.btnDelSpp.setText(QCoreApplication.translate("dlgAddAsph", u"\u0423\u0434\u0430\u043b\u0438\u0442\u044c", None))
         self.btnAddAsph.setText(QCoreApplication.translate("dlgAddAsph", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0430\u0441\u0444\u0430\u043b\u044c\u0442", None))
         self.label_8.setText(QCoreApplication.translate("dlgAddAsph", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
+        self.btnAddCtg.setText(QCoreApplication.translate("dlgAddAsph", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044e", None))
+        self.bntAddClm.setText(QCoreApplication.translate("dlgAddAsph", u"\u041d\u043e\u0432\u0430\u044f \u043a\u043b\u0438\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0437\u043e\u043d\u0430", None))
     # retranslateUi
 

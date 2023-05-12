@@ -59,7 +59,7 @@ class Ui_dlgCngAsph(object):
         self.cmbClm.setGeometry(QRect(40, 100, 131, 21))
         self.label = QLabel(dlgCngAsph)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(210, 60, 61, 20))
+        self.label.setGeometry(QRect(190, 60, 61, 20))
         self.label_3 = QLabel(dlgCngAsph)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(190, 140, 48, 16))
@@ -71,7 +71,7 @@ class Ui_dlgCngAsph(object):
         self.cmbCtg.setGeometry(QRect(40, 60, 131, 21))
         self.label_2 = QLabel(dlgCngAsph)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(210, 100, 48, 16))
+        self.label_2.setGeometry(QRect(190, 100, 48, 16))
         self.inpName = QLineEdit(dlgCngAsph)
         self.inpName.setObjectName(u"inpName")
         self.inpName.setGeometry(QRect(40, 20, 113, 21))
@@ -84,6 +84,12 @@ class Ui_dlgCngAsph(object):
         self.label_4 = QLabel(dlgCngAsph)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setGeometry(QRect(190, 180, 48, 16))
+        self.bntAddClm = QPushButton(dlgCngAsph)
+        self.bntAddClm.setObjectName(u"bntAddClm")
+        self.bntAddClm.setGeometry(QRect(270, 100, 191, 21))
+        self.btnAddCtg = QPushButton(dlgCngAsph)
+        self.btnAddCtg.setObjectName(u"btnAddCtg")
+        self.btnAddCtg.setGeometry(QRect(270, 60, 191, 21))
 
         self.retranslateUi(dlgCngAsph)
 
@@ -103,5 +109,7 @@ class Ui_dlgCngAsph(object):
         self.label_2.setText(QCoreApplication.translate("dlgCngAsph", u"\u041a\u043b\u0438\u043c\u0430\u0442", None))
         self.label_8.setText(QCoreApplication.translate("dlgCngAsph", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
         self.label_4.setText(QCoreApplication.translate("dlgCngAsph", u"\u041f\u0435\u0441\u043e\u043a", None))
+        self.bntAddClm.setText(QCoreApplication.translate("dlgCngAsph", u"\u041d\u043e\u0432\u0430\u044f \u043a\u043b\u0438\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0437\u043e\u043d\u0430", None))
+        self.btnAddCtg.setText(QCoreApplication.translate("dlgCngAsph", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044e", None))
     # retranslateUi
 
