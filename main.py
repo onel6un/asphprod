@@ -10,16 +10,36 @@ from dlg_cng_asph import Ui_dlgCngAsph
 from dlg_add_clm import Ui_DlgAddClm
 from dlg_add_ctg import Ui_DlgAddCtg
 from dlg_calc import Ui_DlgCalc
+from dlg_vld import Ui_VldDlg
 from dlg_add_factory import Ui_AddFactory
 from models import (Price, Asphalt, Factory, Supplement, Category,
                     Climat, AsphSupp)
 
 
-class ValidateDialog(QDialog):
-    def __init__(self, *args, **kwargs):
+class ValidateDlg(QDialog):
+    def __init__(self, msg, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.ui = Ui_DlgAddClm()
+        self.ui = Ui_VldDlg()
         self.ui.setupUi(self)
+
+        self.ui.lbVld.setText(msg)
+
+        self.ui.btnOk.clicked.connect(self.on_btnOk_click)
+
+    def on_btnOk_click(self):
+        self.accept()
+
+
+class Validator:
+    def is_str(self, string: str, msg='error') -> bool:
+        if not isinstance(string, str) or not string:
+            self.run_validate_dialog(msg)
+            return False
+        return True
+
+    def run_validate_dialog(self, msg):
+        dialog = ValidateDlg(msg)
+        dialog.exec()
 
 
 class ClimatAddDialog(QDialog):
@@ -28,13 +48,21 @@ class ClimatAddDialog(QDialog):
         self.ui = Ui_DlgAddClm()
         self.ui.setupUi(self)
 
+        self.validator = Validator()
+
         self.ui.btnAddClm.clicked.connect(self.on_btnAddClm_click)
 
     def on_btnAddClm_click(self):
         climat_name = self.ui.inpName.text()
-        Climat.create(climat_name=climat_name)
 
-        self.accept()
+        validate_bool = self.validator.is_str(
+            climat_name,
+            'Название должно быть строкой!'
+        )
+
+        if validate_bool:
+            Climat.create(climat_name=climat_name)
+            self.accept()
 
 
 class CategoryAddDialog(QDialog):
