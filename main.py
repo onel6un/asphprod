@@ -9,8 +9,17 @@ from dlg_add_asph import Ui_dlgAddAsph
 from dlg_cng_asph import Ui_dlgCngAsph
 from dlg_add_clm import Ui_DlgAddClm
 from dlg_add_ctg import Ui_DlgAddCtg
+from dlg_calc import Ui_DlgCalc
+from dlg_add_factory import Ui_AddFactory
 from models import (Price, Asphalt, Factory, Supplement, Category,
                     Climat, AsphSupp)
+
+
+class ValidateDialog(QDialog):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui = Ui_DlgAddClm()
+        self.ui.setupUi(self)
 
 
 class ClimatAddDialog(QDialog):
@@ -344,6 +353,21 @@ class AsphCngDialog(AsphAddDialog):
         self.accept()
 
 
+class FactoryDialog(QDialog):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui = Ui_AddFactory()
+        self.ui.setupUi(self)
+
+        self.ui.btnAddFct.clicked.connect(self.on_btnAddFct_click)
+
+    def on_btnAddFct_click(self):
+        factory_name = self.ui.inpName.text()
+        Factory.create(factory_name=factory_name)
+
+        self.accept()
+
+
 class PriceDialog(QDialog):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -357,6 +381,7 @@ class PriceDialog(QDialog):
         self.ui.btnAdd.clicked.connect(self.on_btnAdd_click)
         self.ui.btnDel.clicked.connect(self.on_btnDel_click)
         self.ui.btnAddAsph.clicked.connect(self.on_btnAddAsph_click)
+        self.ui.btnAddFactory.clicked.connect(self.on_btnAddFactory_click)
 
     def load_price(self):
         self.ui.listPrice.clear()
@@ -405,6 +430,56 @@ class PriceDialog(QDialog):
 
         self.load_asphalt()
 
+    def on_btnAddFactory_click(self):
+        self.ui.cmbFactory.clear()
+        dialog = FactoryDialog()
+        dialog.exec()
+
+        self.load_factory()
+
+
+class CalcDialog(QDialog):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui = Ui_DlgCalc()
+        self.ui.setupUi(self)
+
+        self.load_climat()
+        self.ui.btnSelect.clicked.connect(self.on_btnSlect_click)
+        self.ui.btnCalc.clicked.connect(self.on_btnCalc_click)
+
+    def load_climat(self):
+        rows = Climat.all()
+        for r in rows:
+            self.ui.cmbClm.addItem(r.climat_name, r)
+
+    def on_btnSlect_click(self):
+        self.ui.lstAsph.clear()
+        durable = int(self.ui.inpTrf.text())
+        climat_id = self.ui.cmbClm.currentData().climat_id
+        data = Asphalt.filter_add_price(durable=durable, climat_id=climat_id)
+        for obj in data:
+            item = QListWidgetItem(
+                f"{obj.factory_name}    {obj.asphalt_name}    {obj.price}"
+            )
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, obj)
+            self.ui.lstAsph.addItem(item)
+
+    def on_btnCalc_click(self):
+        lenght = float(self.ui.inpLngh.text())
+        width = float(self.ui.inpWdth.text())
+        height = float(self.ui.inpHght.text())
+
+        curr_item = self.ui.lstAsph.currentItem()
+        curr_asphalt = curr_item.data(QtCore.Qt.ItemDataRole.UserRole)
+        price = curr_asphalt.price
+
+        volume = lenght * width * height
+        cost = volume * price
+
+        self.ui.lbVolume.setText(f'{volume}')
+        self.ui.lbCost.setText(f'{cost}')
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -414,6 +489,7 @@ class MainWindow(QMainWindow):
 
         self.ui.btnPrice.clicked.connect(self.on_btnPrice_click)
         self.ui.btnAsph.clicked.connect(self.on_btnAsph_click)
+        self.ui.btnCalc.clicked.connect(self.on_btnCalc_click)
 
     def on_btnPrice_click(self):
         dialog = PriceDialog()
@@ -421,6 +497,10 @@ class MainWindow(QMainWindow):
 
     def on_btnAsph_click(self):
         dialog = AsphDialog()
+        dialog.exec()
+
+    def on_btnCalc_click(self):
+        dialog = CalcDialog()
         dialog.exec()
 
 

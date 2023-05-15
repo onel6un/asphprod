@@ -31,9 +31,9 @@ class Ui_MainWindow(object):
         self.btnAsph = QPushButton(self.centralwidget)
         self.btnAsph.setObjectName(u"btnAsph")
         self.btnAsph.setGeometry(QRect(30, 60, 111, 24))
-        self.pushButton_3 = QPushButton(self.centralwidget)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setGeometry(QRect(30, 110, 75, 24))
+        self.btnCalc = QPushButton(self.centralwidget)
+        self.btnCalc.setObjectName(u"btnCalc")
+        self.btnCalc.setGeometry(QRect(30, 110, 75, 24))
         self.pushButton_4 = QPushButton(self.centralwidget)
         self.pushButton_4.setObjectName(u"pushButton_4")
         self.pushButton_4.setGeometry(QRect(30, 160, 75, 24))
@@ -55,7 +55,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.btnPrice.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0440\u0430\u0439\u0441", None))
         self.btnAsph.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043f\u0438\u0441\u043e\u043a \u043f\u043e\u043a\u0440\u044b\u0442\u0438\u0439", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0441\u0447\u0435\u0442", None))
+        self.btnCalc.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0441\u0447\u0435\u0442", None))
         self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi
 

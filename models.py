@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
 
 
-engine = create_engine("sqlite+pysqlite:///db.db")
+engine = create_engine("sqlite+pysqlite:///db.db", echo=True)
 
 
 class Price:
@@ -62,6 +62,40 @@ class Asphalt:
             '''
 
             return s.execute(text(query))
+
+    @staticmethod
+    def filter_add_price(asphalt_id='NULL', asphalt_name='NULL', send='NULL',
+                         breakstone='NULL', bitumen='NULL', climat_id='NULL',
+                         category_id='NULL', durable='NULL'):
+        with Session(engine) as s:
+            query = '''
+                SELECT *
+                FROM factory
+                    JOIN asph_price USING(factory_id)
+                    JOIN asphalt
+                        ON asph_price.asphalt_id = asphalt.asphalt_id
+                    JOIN category
+                        ON category.category_id = asphalt.category_id
+                WHERE (:asphalt_id = "NULL"
+                        or asphalt.asphalt_id = :asphalt_id)
+                    AND (:asphalt_name = "NULL"
+                         or asphalt_name = :asphalt_name)
+                    AND (:send = "NULL" or send = :send)
+                    AND (:breakstone = "NULL" or send = :send)
+                    AND (:bitumen = "NULL" or bitumen = :bitumen)
+                    AND (:climat_id = "NULL" or asphalt.climat_id = :climat_id)
+                    AND (:category_id = "NULL"
+                        or asphalt.category_id = :category_id)
+                    AND (:durable = "NULL" or durable > :durable)
+                ORDER BY price
+            '''
+        return s.execute(
+                text(query),
+                {'asphalt_name': asphalt_name, 'send': send,
+                 'bitumen': bitumen, 'breakstone': breakstone,
+                 'category_id': category_id, 'climat_id': climat_id,
+                 'asphalt_id': asphalt_id, 'durable': durable}
+            )
 
     @staticmethod
     def delete(asphalt_id):
@@ -169,6 +203,17 @@ class Factory:
             '''
 
             return s.execute(text(query))
+
+    @staticmethod
+    def create(factory_name):
+        with Session(engine) as s:
+            query = '''
+                INSERT INTO factory(factory_name)
+                VALUES (:factory_name)
+            '''
+
+            s.execute(text(query), {'factory_name': factory_name})
+            s.commit()
 
 
 class Supplement:

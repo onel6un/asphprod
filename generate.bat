@@ -5,3 +5,6 @@ pyside6-uic dlg_add_asph.ui -o dlg_add_asph.py
 pyside6-uic dlg_cng_asph.ui -o dlg_cng_asph.py
 pyside6-uic dlg_add_clm.ui -o dlg_add_clm.py
 pyside6-uic dlg_add_ctg.ui -o dlg_add_ctg.py
+pyside6-uic dlg_add_factory.ui -o dlg_add_factory.py
+pyside6-uic dlg_calc.ui -o dlg_calc.py
+pyside6-uic dlg_calc.ui -o dlg_calc.py
