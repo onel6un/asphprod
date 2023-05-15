@@ -37,35 +37,65 @@ class Validator:
             return False
         return True
 
+    def is_None_or_empty(self, value: str | None, msg='error') -> bool:
+        if not value or value is None:
+            self.run_validate_dialog(msg)
+            return True
+        return False
+
+    def input_is_real(self, value: str, msg='error') -> bool:
+        try:
+            float(value)
+            return True
+
+        except ValueError:
+            self.run_validate_dialog(msg)
+            return False
+
+    def input_is_int(self, value: str, msg='error') -> bool:
+        try:
+            int(value)
+            return True
+
+        except ValueError:
+            self.run_validate_dialog(msg)
+            return False
+
     def run_validate_dialog(self, msg):
         dialog = ValidateDlg(msg)
         dialog.exec()
 
 
 class ClimatAddDialog(QDialog):
+    validator = Validator()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_DlgAddClm()
         self.ui.setupUi(self)
 
-        self.validator = Validator()
-
         self.ui.btnAddClm.clicked.connect(self.on_btnAddClm_click)
+
+    def __check_inputs(self, climat_name):
+        validate_name = self.validator.is_str(
+            climat_name,
+            'Название должно быть не пустой строкой!'
+        )
+        return validate_name
 
     def on_btnAddClm_click(self):
         climat_name = self.ui.inpName.text()
 
-        validate_bool = self.validator.is_str(
-            climat_name,
-            'Название должно быть строкой!'
-        )
+        if not self.__check_inputs(climat_name):
+            return
 
-        if validate_bool:
-            Climat.create(climat_name=climat_name)
-            self.accept()
+        Climat.create(climat_name=climat_name)
+        self.accept()
 
 
 class CategoryAddDialog(QDialog):
+    validator = Validator()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_DlgAddCtg()
@@ -73,11 +103,27 @@ class CategoryAddDialog(QDialog):
 
         self.ui.btnAddCtg.clicked.connect(self.on_btnAddClm_click)
 
+    def __check_inputs(self, category_name, durable):
+        validate_durable = self.validator.input_is_real(
+            durable,
+            'Нагрузка, должна быть числом'
+        )
+
+        validate_name = self.validator.is_str(
+            category_name,
+            'Название должно быть не пустой строкой!'
+        )
+        return all((validate_durable, validate_name))
+
     def on_btnAddClm_click(self):
         category_name = self.ui.inpName.text()
-        durable = float(self.ui.inpDrb.text())
-        Category.create(category_name=category_name, durable=durable)
+        durable = self.ui.inpDrb.text()
 
+        if not self.__check_inputs(category_name=category_name,
+                                   durable=durable):
+            return
+
+        Category.create(category_name=category_name, durable=durable)
         self.accept()
 
 
@@ -123,7 +169,8 @@ class TableAsph(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.ItemDataRole.UserRole:
             return self.items[index.row()]
 
-    def headerData(self, section: int, orientation: QtCore.Qt.Orientation, role: int):
+    def headerData(self, section: int, orientation: QtCore.Qt.Orientation,
+                   role: int):
         if role == QtCore.Qt.ItemDataRole.DisplayRole:
             if orientation == QtCore.Qt.Orientation.Horizontal:
                 return {
@@ -197,7 +244,8 @@ class AsphDialog(QDialog):
         suplements_str = ''
         lst_obj = []
         for obj in suplements_obj:
-            suplements_str = suplements_str + f"{obj.supplement_name} - {obj.amount}\n"
+            suplements_str = (suplements_str +
+                              f"{obj.supplement_name} - {obj.amount}\n")
             lst_obj.append(obj)
 
         return {
@@ -207,6 +255,8 @@ class AsphDialog(QDialog):
 
 
 class AsphAddDialog(QDialog):
+    validator = Validator()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_dlgAddAsph()
@@ -221,6 +271,25 @@ class AsphAddDialog(QDialog):
         self.ui.btnAddAsph.clicked.connect(self.on_btnAddAsph_click)
         self.ui.bntAddClm.clicked.connect(self.on_btnAddClm_click)
         self.ui.btnAddCtg.clicked.connect(self.on_btnAddCtg_click)
+
+    def _check_inputs(self, asphalt_name, amount_btm, amount_snd, amount_brk):
+        validate_name = self.validator.is_str(
+            asphalt_name,
+            "Название афсфальта, должно быть не пустой строкой!"
+        )
+        validate_btm = self.validator.input_is_real(
+            amount_btm,
+            "Долевая часть битума, должна быть числом!"
+        )
+        validate_snd = self.validator.input_is_real(
+            amount_snd,
+            "Долевая часть песка, должна быть числом!"
+        )
+        validate_brk = self.validator.input_is_real(
+            amount_brk,
+            "Долевая часть щебня, должна быть числом!"
+        )
+        return all((validate_name, validate_btm, validate_snd, validate_brk))
 
     def load_category(self):
         self.ui.cmbCtg.clear()
@@ -240,14 +309,22 @@ class AsphAddDialog(QDialog):
             self.ui.cmbSpp.addItem(r.supplement_name, r)
 
     def on_btnAddAsph_click(self):
-        asph_name = self.ui.inpName.text()
+        asphalt_name = self.ui.inpName.text()
         climat_id = self.ui.cmbClm.currentData().climat_id
         category_id = self.ui.cmbCtg.currentData().category_id
-        amount_btm = float(self.ui.inpBtm.text())
-        amount_snd = float(self.ui.inpSnd.text())
-        amount_brk = float(self.ui.inpBrk.text())
+        amount_btm = self.ui.inpBtm.text()
+        amount_snd = self.ui.inpSnd.text()
+        amount_brk = self.ui.inpBrk.text()
 
-        Asphalt.create(asphalt_name=asph_name, climat_id=climat_id,
+        if not self._check_inputs(
+            asphalt_name=asphalt_name,
+            amount_btm=amount_btm,
+            amount_brk=amount_brk,
+            amount_snd=amount_snd
+        ):
+            return
+
+        Asphalt.create(asphalt_name=asphalt_name, climat_id=climat_id,
                        category_id=category_id, bitumen=amount_btm,
                        send=amount_snd, breakstone=amount_brk)
 
@@ -296,11 +373,14 @@ class AsphAddDialog(QDialog):
 
 
 class AsphCngDialog(AsphAddDialog):
+    validator = Validator()
+
     def __init__(self, instance, *args, **kwargs):
         super(AsphAddDialog, self).__init__(*args, **kwargs)
         self.ui = Ui_dlgCngAsph()
         self.ui.setupUi(self)
 
+        self.__check_instance(instance)
         self.obj_instance = instance
 
         self.load_category()
@@ -314,6 +394,13 @@ class AsphCngDialog(AsphAddDialog):
         self.ui.btnCngAsph.clicked.connect(self.on_btnCngAsph_click)
         self.ui.bntAddClm.clicked.connect(self.on_btnAddClm_click)
         self.ui.btnAddCtg.clicked.connect(self.on_btnAddCtg_click)
+
+    def __check_instance(self, instance) -> None:
+        if self.validator.is_None_or_empty(
+            instance,
+            "Выберите, позицию которую нужно изменить!"
+        ):
+            self.accept()
 
     def load_category(self):
         super().load_category()
@@ -351,13 +438,22 @@ class AsphCngDialog(AsphAddDialog):
 
     def on_btnCngAsph_click(self):
         asph_instance = self.obj_instance[0]
+
         asphalt_id = asph_instance.asphalt_id
         asphalt_name = self.ui.inpName.text()
         climat_id = self.ui.cmbClm.currentData().climat_id
         category_id = self.ui.cmbCtg.currentData().category_id
-        amount_btm = float(self.ui.inpBtm.text())
-        amount_snd = float(self.ui.inpSnd.text())
-        amount_brk = float(self.ui.inpBrk.text())
+        amount_btm = self.ui.inpBtm.text()
+        amount_snd = self.ui.inpSnd.text()
+        amount_brk = self.ui.inpBrk.text()
+
+        if not self._check_inputs(
+            asphalt_name=asphalt_name,
+            amount_btm=amount_btm,
+            amount_brk=amount_brk,
+            amount_snd=amount_snd
+        ):
+            return
 
         Asphalt.update(asphalt_id=asphalt_id, climat_id=climat_id,
                        category_id=category_id, bitumen=amount_btm,
@@ -371,12 +467,12 @@ class AsphCngDialog(AsphAddDialog):
             for i in range(count_spp):
 
                 item_spp = self.ui.lstSpp.item(i)
-                data_spp = item_spp.data(QtCore.Qt.ItemDataRole.UserRole) 
+                data_spp = item_spp.data(QtCore.Qt.ItemDataRole.UserRole)
                 amount_spp = data_spp[1]
                 spp_id = data_spp[0].supplement_id
 
-                AsphSupp.create(asphalt_id=asphalt_id, supplement_id=spp_id,
-                                amount=amount_spp)
+                AsphSupp.create(asphalt_id=asphalt_id,
+                                supplement_id=spp_id, amount=amount_spp)
 
         self.accept()
 
@@ -397,6 +493,8 @@ class FactoryDialog(QDialog):
 
 
 class PriceDialog(QDialog):
+    validator = Validator()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_dlgPrice()
@@ -410,6 +508,12 @@ class PriceDialog(QDialog):
         self.ui.btnDel.clicked.connect(self.on_btnDel_click)
         self.ui.btnAddAsph.clicked.connect(self.on_btnAddAsph_click)
         self.ui.btnAddFactory.clicked.connect(self.on_btnAddFactory_click)
+
+    def _check_price(self, price):
+        return self.validator.input_is_real(
+            price,
+            "Цена должна быть числом!"
+        )
 
     def load_price(self):
         self.ui.listPrice.clear()
@@ -435,6 +539,9 @@ class PriceDialog(QDialog):
         factory_id = self.ui.cmbFactory.currentData().factory_id
         asphalt_id = self.ui.cmbAsph.currentData().asphalt_id
         price = self.ui.inpPrice.text()
+
+        if not self._check_price(price):
+            return
 
         Price.create(
             factory_id=factory_id,
@@ -467,6 +574,8 @@ class PriceDialog(QDialog):
 
 
 class CalcDialog(QDialog):
+    validator = Validator()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_DlgCalc()
@@ -476,6 +585,33 @@ class CalcDialog(QDialog):
         self.ui.btnSelect.clicked.connect(self.on_btnSlect_click)
         self.ui.btnCalc.clicked.connect(self.on_btnCalc_click)
 
+    def _check_inputs(self, lenght, widht, height):
+        validate_lengh = self.validator.input_is_real(
+            lenght,
+            "Длина должна быть числом!"
+        )
+        validate_widht = self.validator.input_is_real(
+            widht,
+            "Ширина должна быть числом!"
+        )
+        validate_height = self.validator.input_is_real(
+            height,
+            "Высота должна быть числом!"
+        )
+        return all((validate_widht, validate_lengh, validate_height))
+
+    def _check_durable(self, durable):
+        return self.validator.input_is_int(
+            durable,
+            "Нагрузка должна быть целым числом!"
+        )
+
+    def _check_item(self, item):
+        return not self.validator.is_None_or_empty(
+            item,
+            "Выберите покрыте для расчета!"
+        )
+
     def load_climat(self):
         rows = Climat.all()
         for r in rows:
@@ -483,7 +619,11 @@ class CalcDialog(QDialog):
 
     def on_btnSlect_click(self):
         self.ui.lstAsph.clear()
-        durable = int(self.ui.inpTrf.text())
+        durable = self.ui.inpTrf.text()
+
+        if not self._check_durable(durable):
+            return
+
         climat_id = self.ui.cmbClm.currentData().climat_id
         data = Asphalt.filter_add_price(durable=durable, climat_id=climat_id)
         for obj in data:
@@ -494,15 +634,22 @@ class CalcDialog(QDialog):
             self.ui.lstAsph.addItem(item)
 
     def on_btnCalc_click(self):
-        lenght = float(self.ui.inpLngh.text())
-        width = float(self.ui.inpWdth.text())
-        height = float(self.ui.inpHght.text())
+        lenght = self.ui.inpLngh.text()
+        width = self.ui.inpWdth.text()
+        height = self.ui.inpHght.text()
+
+        if not self._check_inputs(lenght=lenght, widht=width, height=height):
+            return
 
         curr_item = self.ui.lstAsph.currentItem()
-        curr_asphalt = curr_item.data(QtCore.Qt.ItemDataRole.UserRole)
-        price = curr_asphalt.price
 
-        volume = lenght * width * height
+        if not self._check_item(curr_item):
+            return
+
+        curr_asphalt_obj = curr_item.data(QtCore.Qt.ItemDataRole.UserRole)
+        price = curr_asphalt_obj.price
+
+        volume = float(lenght) * float(width) * float(height)
         cost = volume * price
 
         self.ui.lbVolume.setText(f'{volume}')

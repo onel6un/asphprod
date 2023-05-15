@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
 
 
-engine = create_engine("sqlite+pysqlite:///db.db", echo=True)
+engine = create_engine("sqlite+pysqlite:///db.db")
 
 
 class Price:
