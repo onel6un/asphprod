@@ -86,7 +86,7 @@ class Asphalt:
                     AND (:climat_id = "NULL" or asphalt.climat_id = :climat_id)
                     AND (:category_id = "NULL"
                         or asphalt.category_id = :category_id)
-                    AND (:durable = "NULL" or durable > :durable)
+                    AND (:durable = "NULL" or durable >= :durable)
                 ORDER BY price
             '''
         return s.execute(
