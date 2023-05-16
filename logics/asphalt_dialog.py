@@ -4,6 +4,7 @@ from ui.dialogs.dlg_asph import Ui_DlgAsph
 from data.models import Asphalt, Supplement
 from .asphalt_add_dialog import AsphAddDialog
 from .asphalt_cng_dialog import AsphCngDialog
+from .validate import Validator
 
 
 class TableAsph(QtCore.QAbstractTableModel):
@@ -64,6 +65,8 @@ class TableAsph(QtCore.QAbstractTableModel):
 
 
 class AsphDialog(QDialog):
+    validator = Validator()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_DlgAsph()
@@ -84,6 +87,12 @@ class AsphDialog(QDialog):
         self.ui.btnAddAsph.clicked.connect(self.on_btnAddAsph_click)
         self.ui.btnCngAsph.clicked.connect(self.on_btnCngAsph_click)
 
+    def __check_item_None(self, item) -> bool:
+        return self.validator.is_None_or_empty(
+            item,
+            'Выберете, позицию для удаления!'
+        )
+
     def load_asphalt(self):
         rows = Asphalt.all()
         items = []
@@ -92,13 +101,13 @@ class AsphDialog(QDialog):
             items.append((r, suplements_dict))
         self.table_model.set_items(items)
 
-    def __get_current_data(self):
+    def on_btnDelAsph_click(self):
         item = self.ui.tbAsph.currentIndex()
         data = item.data(QtCore.Qt.ItemDataRole.UserRole)
-        return data
 
-    def on_btnDelAsph_click(self):
-        data = self.__get_current_data()
+        if self.__check_item_None(data):
+            return
+
         asphalt_id = data[0].asphalt_id
         Asphalt.delete(asphalt_id=asphalt_id)
 
@@ -111,7 +120,10 @@ class AsphDialog(QDialog):
         self.load_asphalt()
 
     def on_btnCngAsph_click(self):
-        dialog = AsphCngDialog(instance=self.__get_current_data())
+        item = self.ui.tbAsph.currentIndex()
+        instance = item.data(QtCore.Qt.ItemDataRole.UserRole)
+
+        dialog = AsphCngDialog(instance=instance)
         dialog.exec()
 
         self.load_asphalt()

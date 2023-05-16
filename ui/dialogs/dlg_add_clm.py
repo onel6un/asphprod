@@ -16,13 +16,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QDialog, QLabel, QLineEdit,
-    QPushButton, QSizePolicy, QWidget)
+    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
+    QWidget)
 
 class Ui_DlgAddClm(object):
     def setupUi(self, DlgAddClm):
         if not DlgAddClm.objectName():
             DlgAddClm.setObjectName(u"DlgAddClm")
-        DlgAddClm.resize(260, 110)
+        DlgAddClm.resize(612, 146)
         self.inpName = QLineEdit(DlgAddClm)
         self.inpName.setObjectName(u"inpName")
         self.inpName.setGeometry(QRect(20, 20, 113, 22))
@@ -32,6 +33,12 @@ class Ui_DlgAddClm(object):
         self.btnAddClm = QPushButton(DlgAddClm)
         self.btnAddClm.setObjectName(u"btnAddClm")
         self.btnAddClm.setGeometry(QRect(70, 70, 111, 21))
+        self.btnDel = QPushButton(DlgAddClm)
+        self.btnDel.setObjectName(u"btnDel")
+        self.btnDel.setGeometry(QRect(480, 20, 111, 21))
+        self.lstClm = QListWidget(DlgAddClm)
+        self.lstClm.setObjectName(u"lstClm")
+        self.lstClm.setGeometry(QRect(240, 10, 231, 111))
 
         self.retranslateUi(DlgAddClm)
 
@@ -42,5 +49,6 @@ class Ui_DlgAddClm(object):
         DlgAddClm.setWindowTitle(QCoreApplication.translate("DlgAddClm", u"\u041d\u043e\u0432\u0430\u044f \u043a\u043b\u0438\u043c\u0430\u0442 \u0437\u043e\u043d\u0430", None))
         self.label.setText(QCoreApplication.translate("DlgAddClm", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
         self.btnAddClm.setText(QCoreApplication.translate("DlgAddClm", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c", None))
+        self.btnDel.setText(QCoreApplication.translate("DlgAddClm", u"\u0423\u0434\u0430\u043b\u0438\u0442\u044c", None))
     # retranslateUi
 

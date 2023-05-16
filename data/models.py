@@ -265,6 +265,20 @@ class Category:
             )
             s.commit()
 
+    @staticmethod
+    def delete(category_id):
+        with Session(engine) as s:
+            query = '''
+                DELETE FROM category
+                WHERE category_id = :category_id
+            '''
+
+            s.execute(
+                text(query),
+                {'category_id': category_id}
+            )
+            s.commit()
+
 
 class Climat:
     @staticmethod
@@ -286,6 +300,20 @@ class Climat:
             '''
 
             s.execute(text(query), {'climat_name': climat_name})
+            s.commit()
+
+    @staticmethod
+    def delete(climat_id):
+        with Session(engine) as s:
+            query = '''
+                DELETE FROM climat
+                WHERE climat_id = :climat_id
+            '''
+
+            s.execute(
+                text(query),
+                {'climat_id': climat_id}
+            )
             s.commit()
 
 

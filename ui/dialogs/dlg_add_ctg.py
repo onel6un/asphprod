@@ -16,13 +16,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QDialog, QLabel, QLineEdit,
-    QPushButton, QSizePolicy, QWidget)
+    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
+    QWidget)
 
 class Ui_DlgAddCtg(object):
     def setupUi(self, DlgAddCtg):
         if not DlgAddCtg.objectName():
             DlgAddCtg.setObjectName(u"DlgAddCtg")
-        DlgAddCtg.resize(307, 137)
+        DlgAddCtg.resize(614, 148)
         self.btnAddCtg = QPushButton(DlgAddCtg)
         self.btnAddCtg.setObjectName(u"btnAddCtg")
         self.btnAddCtg.setGeometry(QRect(80, 100, 111, 21))
@@ -38,6 +39,12 @@ class Ui_DlgAddCtg(object):
         self.label_2 = QLabel(DlgAddCtg)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(180, 60, 51, 21))
+        self.lstCtg = QListWidget(DlgAddCtg)
+        self.lstCtg.setObjectName(u"lstCtg")
+        self.lstCtg.setGeometry(QRect(250, 10, 231, 111))
+        self.btnDel = QPushButton(DlgAddCtg)
+        self.btnDel.setObjectName(u"btnDel")
+        self.btnDel.setGeometry(QRect(490, 20, 111, 21))
 
         self.retranslateUi(DlgAddCtg)
 
@@ -50,5 +57,6 @@ class Ui_DlgAddCtg(object):
         self.label.setText(QCoreApplication.translate("DlgAddCtg", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
         self.inpDrb.setText("")
         self.label_2.setText(QCoreApplication.translate("DlgAddCtg", u"\u041d\u0430\u0433\u0440\u0443\u0437\u043a\u0430", None))
+        self.btnDel.setText(QCoreApplication.translate("DlgAddCtg", u"\u0423\u0434\u0430\u043b\u0438\u0442\u044c", None))
     # retranslateUi
 

@@ -25,6 +25,12 @@ class PriceDialog(QDialog):
         self.ui.btnAddAsph.clicked.connect(self.on_btnAddAsph_click)
         self.ui.btnAddFactory.clicked.connect(self.on_btnAddFactory_click)
 
+    def __check_item_None(self, item) -> bool:
+        return self.validator.is_None_or_empty(
+            item,
+            'Выберете, позицию для удаления!'
+        )
+
     def _check_price(self, price):
         return self.validator.input_is_real(
             price,
@@ -69,6 +75,10 @@ class PriceDialog(QDialog):
 
     def on_btnDel_click(self):
         item = self.ui.listPrice.currentItem()
+
+        if self.__check_item_None(item):
+            return
+
         data = item.data(QtCore.Qt.ItemDataRole.UserRole)
         Price.delete(price_id=data.price_id)
 

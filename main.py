@@ -1,6 +1,6 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
-from ui.main_window.main_window import Ui_MainWindow
+from ui.dialogs.main_window import Ui_MainWindow
 from logics.asphalt_dialog import AsphDialog
 from logics.calc_dialog import CalcDialog
 from logics.price_dialog import PriceDialog
