@@ -61,12 +61,12 @@
     <rect>
      <x>30</x>
      <y>140</y>
-     <width>131</width>
+     <width>241</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Подобрать покрытие</string>
+    <string>Подобрать покрытие из прайса</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="inpHght">
@@ -200,7 +200,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Цена:</string>
+    <string>Цена (сумм):</string>
    </property>
   </widget>
   <widget class="QLabel" name="lbCost">
@@ -265,7 +265,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Название покрытия</string>
+    <string>Тип покрытия</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_10">

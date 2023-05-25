@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
+    <width>560</width>
     <height>430</height>
    </rect>
   </property>
@@ -104,12 +104,12 @@
     <rect>
      <x>190</x>
      <y>130</y>
-     <width>48</width>
+     <width>101</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Битум</string>
+    <string>Битум (%масс.)</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -117,12 +117,12 @@
     <rect>
      <x>190</x>
      <y>170</y>
-     <width>48</width>
+     <width>101</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Песок</string>
+    <string>Песок (%масс.)</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
@@ -130,12 +130,12 @@
     <rect>
      <x>190</x>
      <y>210</y>
-     <width>48</width>
+     <width>111</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Щебень</string>
+    <string>Щебень (%масс.)</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -243,7 +243,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Название</string>
+    <string>Тип</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnAddCtg">
@@ -270,6 +270,19 @@
    </property>
    <property name="text">
     <string>Новая климатическая зона</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnNewSpp">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>330</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Создать добавку</string>
    </property>
   </widget>
  </widget>

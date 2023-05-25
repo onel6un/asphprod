@@ -38,7 +38,7 @@ class Ui_DlgCalc(object):
         self.cmbClm.setGeometry(QRect(30, 20, 201, 22))
         self.btnSelect = QPushButton(DlgCalc)
         self.btnSelect.setObjectName(u"btnSelect")
-        self.btnSelect.setGeometry(QRect(30, 140, 131, 21))
+        self.btnSelect.setGeometry(QRect(30, 140, 241, 21))
         self.inpHght = QLineEdit(DlgCalc)
         self.inpHght.setObjectName(u"inpHght")
         self.inpHght.setGeometry(QRect(300, 420, 101, 21))
@@ -103,7 +103,7 @@ class Ui_DlgCalc(object):
     def retranslateUi(self, DlgCalc):
         DlgCalc.setWindowTitle(QCoreApplication.translate("DlgCalc", u"\u0420\u0430\u0441\u0447\u0435\u0442", None))
         self.btnCalc.setText(QCoreApplication.translate("DlgCalc", u"\u0420\u0430\u0441\u0447\u0438\u0442\u0430\u0442\u044c", None))
-        self.btnSelect.setText(QCoreApplication.translate("DlgCalc", u"\u041f\u043e\u0434\u043e\u0431\u0440\u0430\u0442\u044c \u043f\u043e\u043a\u0440\u044b\u0442\u0438\u0435", None))
+        self.btnSelect.setText(QCoreApplication.translate("DlgCalc", u"\u041f\u043e\u0434\u043e\u0431\u0440\u0430\u0442\u044c \u043f\u043e\u043a\u0440\u044b\u0442\u0438\u0435 \u0438\u0437 \u043f\u0440\u0430\u0439\u0441\u0430", None))
         self.label.setText(QCoreApplication.translate("DlgCalc", u"\u041a\u043b\u0438\u043c\u0430\u0442", None))
         self.label_2.setText(QCoreApplication.translate("DlgCalc", u"\u0412\u044b\u0441\u043e\u0442\u0430 (\u043c\u0435\u0442\u0440)", None))
         self.label_3.setText(QCoreApplication.translate("DlgCalc", u"\u0422\u0440\u0430\u0444\u0438\u043a (\u043c/\u0441\u0443\u0442)", None))
@@ -111,10 +111,10 @@ class Ui_DlgCalc(object):
         self.label_5.setText(QCoreApplication.translate("DlgCalc", u"\u0414\u043b\u0438\u043d\u0430 (\u043c\u0435\u0442\u0440)", None))
         self.lbVolume.setText("")
         self.label_6.setText(QCoreApplication.translate("DlgCalc", u"\u041e\u0431\u044a\u0435\u043c (\u043c.\u043a\u0443\u0431)", None))
-        self.label_7.setText(QCoreApplication.translate("DlgCalc", u"\u0426\u0435\u043d\u0430:", None))
+        self.label_7.setText(QCoreApplication.translate("DlgCalc", u"\u0426\u0435\u043d\u0430 (\u0441\u0443\u043c\u043c):", None))
         self.lbCost.setText("")
         self.label_8.setText(QCoreApplication.translate("DlgCalc", u"\u0417\u0430\u0432\u043e\u0434", None))
-        self.label_9.setText(QCoreApplication.translate("DlgCalc", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u043f\u043e\u043a\u0440\u044b\u0442\u0438\u044f", None))
+        self.label_9.setText(QCoreApplication.translate("DlgCalc", u"\u0422\u0438\u043f \u043f\u043e\u043a\u0440\u044b\u0442\u0438\u044f", None))
         self.label_10.setText(QCoreApplication.translate("DlgCalc", u"\u0426\u0435\u043d\u0430 \u0437\u0430 \u043c.\u043a\u0443\u0431", None))
     # retranslateUi
 

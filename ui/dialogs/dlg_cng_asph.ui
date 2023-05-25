@@ -118,19 +118,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>220</y>
-     <width>48</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Щебень</string>
-   </property>
-  </widget>
   <widget class="QComboBox" name="cmbClm">
    <property name="geometry">
     <rect>
@@ -152,19 +139,6 @@
    </property>
    <property name="text">
     <string>Категория</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>140</y>
-     <width>48</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Битум</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="inpBrk">
@@ -230,20 +204,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Название</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>180</y>
-     <width>48</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Песок</string>
+    <string>Тип</string>
    </property>
   </widget>
   <widget class="QPushButton" name="bntAddClm">
@@ -270,6 +231,58 @@
    </property>
    <property name="text">
     <string>Добавить категорию</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnNewSpp">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>350</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Создать добавку</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>180</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Песок (%масс.)</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>220</y>
+     <width>111</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Щебень (%масс.)</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>140</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Битум (%масс.)</string>
    </property>
   </widget>
  </widget>

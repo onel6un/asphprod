@@ -239,6 +239,31 @@ class Supplement:
 
             return s.execute(text(query), {'asphalt_id': asphalt_id})
 
+    @staticmethod
+    def create(supplement_name):
+        with Session(engine) as s:
+            query = '''
+                INSERT INTO supplement(supplement_name)
+                VALUES (:supplement_name)
+            '''
+
+            s.execute(text(query), {'supplement_name': supplement_name})
+            s.commit()
+
+    @staticmethod
+    def delete(supplement_id):
+        with Session(engine) as s:
+            query = '''
+                DELETE FROM supplement
+                WHERE supplement_id = :supplement_id
+            '''
+
+            s.execute(
+                text(query),
+                {'supplement_id': supplement_id}
+            )
+            s.commit()
+
 
 class Category:
     @staticmethod

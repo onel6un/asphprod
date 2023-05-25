@@ -8,3 +8,4 @@ pyside6-uic ui/dialogs/dlg_add_ctg.ui -o ui/dialogs/dlg_add_ctg.py
 pyside6-uic ui/dialogs/dlg_add_factory.ui -o ui/dialogs/dlg_add_factory.py
 pyside6-uic ui/dialogs/dlg_calc.ui -o ui/dialogs/dlg_calc.py
 pyside6-uic ui/dialogs/dlg_vld.ui -o ui/dialogs/dlg_vld.py
+pyside6-uic ui/dialogs/dlg_add_spp.ui -o ui/dialogs/dlg_add_spp.py

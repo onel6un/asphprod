@@ -3,8 +3,10 @@ from PySide6 import QtCore
 from PySide6.QtWidgets import QDialog, QListWidgetItem
 from ui.dialogs.dlg_add_asph import Ui_dlgAddAsph
 
+
 from .category_add_dialog import CategoryAddDialog
 from .climat_add_dialog import ClimatAddDialog
+from .supplement_add_dialog import SppAddDialog
 from .validate import Validator
 
 
@@ -25,6 +27,7 @@ class AsphAddDialog(QDialog):
         self.ui.btnAddAsph.clicked.connect(self.on_btnAddAsph_click)
         self.ui.bntAddClm.clicked.connect(self.on_btnAddClm_click)
         self.ui.btnAddCtg.clicked.connect(self.on_btnAddCtg_click)
+        self.ui.btnNewSpp.clicked.connect(self.on_btnNewSpp_click)
 
     def _check_inputs(self, asphalt_name, amount_btm, amount_snd, amount_brk):
         validate_name = self.validator.is_str(
@@ -58,6 +61,8 @@ class AsphAddDialog(QDialog):
             self.ui.cmbClm.addItem(r.climat_name, r)
 
     def load_supplement(self):
+        self.ui.cmbSpp.clear()
+        
         rows = Supplement.all()
         for r in rows:
             self.ui.cmbSpp.addItem(r.supplement_name, r)
@@ -124,3 +129,9 @@ class AsphAddDialog(QDialog):
         dialog.exec()
 
         self.load_category()
+
+    def on_btnNewSpp_click(self):
+        dialog = SppAddDialog()
+        dialog.exec()
+
+        self.load_supplement()

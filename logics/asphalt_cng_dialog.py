@@ -29,6 +29,7 @@ class AsphCngDialog(AsphAddDialog):
         self.ui.btnCngAsph.clicked.connect(self.on_btnCngAsph_click)
         self.ui.bntAddClm.clicked.connect(self.on_btnAddClm_click)
         self.ui.btnAddCtg.clicked.connect(self.on_btnAddCtg_click)
+        self.ui.btnNewSpp.clicked.connect(self.on_btnNewSpp_click)
 
     def __check_instance(self, instance) -> None:
         if self.validator.is_None_or_empty(

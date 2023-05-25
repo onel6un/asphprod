@@ -54,7 +54,7 @@ class TableAsph(QtCore.QAbstractTableModel):
         if role == QtCore.Qt.ItemDataRole.DisplayRole:
             if orientation == QtCore.Qt.Orientation.Horizontal:
                 return {
-                    0: 'Название',
+                    0: 'Тип',
                     1: 'Битум',
                     2: 'Песок',
                     3: 'Щебень',
